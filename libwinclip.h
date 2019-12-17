@@ -28,7 +28,7 @@ int winclip_init_n(struct winclip *wclip, UINT format, size_t buf_size);
 /* Same as winclip_init_n() but uses the LIBWINCLIP_INIT_BUF_SIZE macro as a buffer size */
 int winclip_init(struct winclip *wclip, UINT format);
 
-/* Free wclip->data */
+/* Free wclip->data and zero out the struct */
 int winclip_free(struct winclip *wclip);
 
 /* Get clipboard content according to the format in wclip->format */
