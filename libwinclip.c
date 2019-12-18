@@ -50,33 +50,28 @@ int winclip_get(struct winclip *wclip) {
 	return 1;
 }
 
-int winclip_put(struct winclip *wclip) {
+int winclip_put_n(void *data, size_t size, UINT format) {
 	
 	if(!EmptyClipboard()) return 0;
 	
-	HGLOBAL hglb = GlobalAlloc(GMEM_MOVEABLE, wclip->size);
+	HGLOBAL hglb = GlobalAlloc(GMEM_MOVEABLE, size);
 	if (!hglb) return 0;
 	void *hglb_locked = GlobalLock(hglb);
 	if (!hglb_locked) {
 		GlobalFree(hglb);
 		return 0;
 	}
-	memcpy(hglb_locked, wclip->data, wclip->size);
+	memcpy(hglb_locked, data, size);
 	GlobalUnlock(hglb);
-	SetClipboardData(wclip->format, hglb);
+	SetClipboardData(format, hglb);
 	
 	return 1;
 }
 
-int winclip_put_n(void *data, size_t size, UINT format) {
+int winclip_put(struct winclip *wclip) {
 	
-	struct winclip clip;
-	clip.format = format;
-	clip.data = data;
-	clip.size = size;
-	return winclip_put(&clip);
+	return winclip_put_n(wclip->data, wclip->size, wclip->format);
 }
-
 
 int winclip_put_str(char *str) {
 	
