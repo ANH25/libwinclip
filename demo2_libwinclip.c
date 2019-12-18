@@ -11,6 +11,7 @@
 #include <windows.h>
 #include <commctrl.h>
 #include <stdlib.h>
+#include <wchar.h>
 
 
 #include "libwinclip.h"
@@ -82,8 +83,9 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 				SetWindowTextW(edit_ctrl, clip->data);
 				
 				int length = GetWindowTextLength(edit_ctrl);
-				wchar_t status_bar_msg[64];
-				wsprintf(status_bar_msg, L"clipboard content length: %d", length);
+				wchar_t status_bar_msg[128];
+				swprintf(status_bar_msg, 128, L"clipboard content length: %d - buffer size: %zu", 
+				length, clip->size);
 				SetWindowTextW(status_bar, status_bar_msg);
 			
 			}
